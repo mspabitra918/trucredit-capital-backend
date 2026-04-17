@@ -1,6 +1,8 @@
 require('dotenv').config();
 
-const base = {
+const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+
+const local = {
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'business_loan',
@@ -9,11 +11,19 @@ const base = {
   dialect: 'postgres',
 };
 
+const prod = url
+  ? {
+      url,
+      dialect: 'postgres',
+      dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
+    }
+  : {
+      ...local,
+      dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
+    };
+
 module.exports = {
-  development: base,
-  test: base,
-  production: {
-    ...base,
-    dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
-  },
+  development: local,
+  test: local,
+  production: prod,
 };

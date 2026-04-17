@@ -25,14 +25,13 @@ import { Borrower } from './modules/borrower/entities/borrower.entity';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         const isProd = config.get<string>('NODE_ENV') === 'production';
-        return {
-          dialect: 'postgres',
+        const url =
+          config.get<string>('DATABASE_URL') ||
+          config.get<string>('POSTGRES_URL');
+
+        const base = {
+          dialect: 'postgres' as const,
           dialectModule: pg,
-          host: config.get<string>('DB_HOST', 'localhost'),
-          port: config.get<number>('DB_PORT', 5432),
-          username: config.get<string>('DB_USERNAME', 'postgres'),
-          password: config.get<string>('DB_PASSWORD', 'postgres'),
-          database: config.get<string>('DB_NAME', 'business_loan'),
           dialectOptions: isProd
             ? { ssl: { require: true, rejectUnauthorized: false } }
             : {},
@@ -41,6 +40,17 @@ import { Borrower } from './modules/borrower/entities/borrower.entity';
           autoLoadModels: true,
           synchronize: !isProd,
           logging: false,
+        };
+
+        if (url) return { ...base, uri: url };
+
+        return {
+          ...base,
+          host: config.get<string>('DB_HOST', 'localhost'),
+          port: config.get<number>('DB_PORT', 5432),
+          username: config.get<string>('DB_USERNAME', 'postgres'),
+          password: config.get<string>('DB_PASSWORD', 'postgres'),
+          database: config.get<string>('DB_NAME', 'business_loan'),
         };
       },
     }),
