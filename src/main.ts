@@ -14,7 +14,11 @@ async function bootstrap() {
   app.setGlobalPrefix("api/v1");
 
   app.enableCors({
-    origin: config.get<string>("CORS_ORIGIN", "http://localhost:3000"),
+    origin: config.get<string>(
+      "CORS_ORIGIN",
+      "http://localhost:3000",
+      "https://trucredit-capital-backend-six.vercel.app/",
+    ),
     credentials: true,
   });
 
