@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import * as pg from 'pg';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { LoanModule } from './modules/loan/loan.module';
@@ -24,6 +25,7 @@ import { Borrower } from './modules/borrower/entities/borrower.entity';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         dialect: 'postgres',
+        dialectModule: pg,
         host: config.get<string>('DB_HOST', 'localhost'),
         port: config.get<number>('DB_PORT', 5432),
         username: config.get<string>('DB_USERNAME', 'postgres'),
