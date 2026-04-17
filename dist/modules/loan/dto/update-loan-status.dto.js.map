@@ -1,1 +1,0 @@
-{"version":3,"file":"update-loan-status.dto.js","sourceRoot":"","sources":["../../../../src/modules/loan/dto/update-loan-status.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA6D;AAE7D,MAAa,mBAAmB;CAoB/B;AApBD,kDAoBC;AAXC;IARC,IAAA,sBAAI,EAAC;QACJ,UAAU;QACV,cAAc;QACd,cAAc;QACd,YAAY;QACZ,UAAU;QACV,QAAQ;KACT,CAAC;;mDAOW;AAIb;IAFC,IAAA,4BAAU,GAAE;IACZ,IAAA,0BAAQ,GAAE;;sDACQ"}

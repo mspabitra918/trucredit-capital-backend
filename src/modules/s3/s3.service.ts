@@ -7,7 +7,7 @@ import {
   GetObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class S3Service {
@@ -35,7 +35,7 @@ export class S3Service {
     applicationId: string = 'temp',
   ): Promise<{ s3Key: string }> {
     const ext = file.originalname.split('.').pop() || 'pdf';
-    const s3Key = `applications/${applicationId}/${uuid()}.${ext}`;
+    const s3Key = `applications/${applicationId}/${randomUUID()}.${ext}`;
 
     await this.s3.send(
       new PutObjectCommand({
