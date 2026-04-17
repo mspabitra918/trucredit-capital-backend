@@ -21,7 +21,7 @@ async function bootstrap() {
           "http://localhost:3000",
           "https://trucreditcapital.com",
           "https://www.trucreditcapital.com",
-          "https://trucredit-capital-backend-six.vercel.app",
+          "https://trucredit-capital-frontend.vercel.app",
         ],
     credentials: true,
   });
