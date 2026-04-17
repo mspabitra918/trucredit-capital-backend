@@ -14,15 +14,32 @@ async function bootstrap() {
   app.setGlobalPrefix("api/v1");
 
   const corsOrigin = config.get<string>("CORS_ORIGIN");
+  const stripSlash = (u: string) => u.trim().replace(/\/+$/, "");
+  const envOrigins = corsOrigin
+    ? corsOrigin.split(",").map(stripSlash).filter(Boolean)
+    : [];
+  const defaultOrigins = [
+    "http://localhost:3000",
+    "https://trucreditcapital.com",
+    "https://www.trucreditcapital.com",
+    "https://trucredit-capital-frontend.vercel.app",
+    "https://trucredit-capital-backend-six.vercel.app",
+  ];
+  const allowedOrigins = Array.from(new Set([...envOrigins, ...defaultOrigins]));
   app.enableCors({
-    origin: corsOrigin
-      ? corsOrigin.split(",").map((o) => o.trim())
-      : [
-          "http://localhost:3000",
-          "https://trucreditcapital.com",
-          "https://www.trucreditcapital.com",
-          "https://trucredit-capital-frontend.vercel.app",
-        ],
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true);
+      const normalized = stripSlash(origin);
+      try {
+        const host = new URL(normalized).hostname;
+        if (allowedOrigins.includes(normalized) || /\.vercel\.app$/.test(host)) {
+          return cb(null, true);
+        }
+      } catch {
+        // fall through to deny
+      }
+      return cb(new Error(`Not allowed by CORS: ${origin}`));
+    },
     credentials: true,
   });
 
