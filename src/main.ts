@@ -19,6 +19,8 @@ async function bootstrap() {
       ? corsOrigin.split(",").map((o) => o.trim())
       : [
           "http://localhost:3000",
+          "https://trucreditcapital.com",
+          "https://www.trucreditcapital.com",
           "https://trucredit-capital-backend-six.vercel.app",
         ],
     credentials: true,
