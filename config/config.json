@@ -9,14 +9,14 @@
   "test": {
     "username": "postgres",
     "password": "Mspabitra1@",
-    "database": "business_loan",
+    "database": "trucredit-capital-backend",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
     "password": "Mspabitra1@",
-    "database": "business_loan",
+    "database": "trucredit-capital-backend",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
