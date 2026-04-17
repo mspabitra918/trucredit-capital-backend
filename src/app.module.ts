@@ -1,0 +1,48 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SequelizeModule } from '@nestjs/sequelize';
+
+import { AuthModule } from './modules/auth/auth.module';
+import { LoanModule } from './modules/loan/loan.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { UserModule } from './modules/user/user.module';
+import { DocumentModule } from './modules/document/document.module';
+import { S3Module } from './modules/s3/s3.module';
+import { EmailModule } from './modules/email/email.module';
+import { BorrowerModule } from './modules/borrower/borrower.module';
+
+import { User } from './modules/user/entities/user.entity';
+import { LoanApplication } from './modules/loan/entities/loan-application.entity';
+import { Admin } from './modules/admin/entities/admin.entity';
+import { Document } from './modules/document/entities/document.entity';
+import { Borrower } from './modules/borrower/entities/borrower.entity';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    SequelizeModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        dialect: 'postgres',
+        host: config.get<string>('DB_HOST', 'localhost'),
+        port: config.get<number>('DB_PORT', 5432),
+        username: config.get<string>('DB_USERNAME', 'postgres'),
+        password: config.get<string>('DB_PASSWORD', 'postgres'),
+        database: config.get<string>('DB_NAME', 'business_loan'),
+        models: [User, LoanApplication, Admin, Document, Borrower],
+        autoLoadModels: true,
+        synchronize: true,
+        logging: false,
+      }),
+    }),
+    S3Module,
+    EmailModule,
+    AuthModule,
+    UserModule,
+    LoanModule,
+    DocumentModule,
+    AdminModule,
+    BorrowerModule,
+  ],
+})
+export class AppModule {}
