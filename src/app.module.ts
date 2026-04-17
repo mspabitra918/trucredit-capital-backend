@@ -23,19 +23,26 @@ import { Borrower } from './modules/borrower/entities/borrower.entity';
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        dialect: 'postgres',
-        dialectModule: pg,
-        host: config.get<string>('DB_HOST', 'localhost'),
-        port: config.get<number>('DB_PORT', 5432),
-        username: config.get<string>('DB_USERNAME', 'postgres'),
-        password: config.get<string>('DB_PASSWORD', 'postgres'),
-        database: config.get<string>('DB_NAME', 'business_loan'),
-        models: [User, LoanApplication, Admin, Document, Borrower],
-        autoLoadModels: true,
-        synchronize: true,
-        logging: false,
-      }),
+      useFactory: (config: ConfigService) => {
+        const isProd = config.get<string>('NODE_ENV') === 'production';
+        return {
+          dialect: 'postgres',
+          dialectModule: pg,
+          host: config.get<string>('DB_HOST', 'localhost'),
+          port: config.get<number>('DB_PORT', 5432),
+          username: config.get<string>('DB_USERNAME', 'postgres'),
+          password: config.get<string>('DB_PASSWORD', 'postgres'),
+          database: config.get<string>('DB_NAME', 'business_loan'),
+          dialectOptions: isProd
+            ? { ssl: { require: true, rejectUnauthorized: false } }
+            : {},
+          pool: { max: 2, min: 0, idle: 0, acquire: 5000, evict: 1000 },
+          models: [User, LoanApplication, Admin, Document, Borrower],
+          autoLoadModels: true,
+          synchronize: !isProd,
+          logging: false,
+        };
+      },
     }),
     S3Module,
     EmailModule,
