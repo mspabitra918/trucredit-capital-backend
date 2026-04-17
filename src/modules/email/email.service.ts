@@ -190,7 +190,7 @@ export class EmailService {
     });
   }
 
-  // ── Stipulation Request Email ─────────────────────────────────1
+  // ── Stipulation Request Email ─────────────────────────────────1---
   async sendStipulationRequest(
     borrowerEmail: string,
     borrowerName: string,
