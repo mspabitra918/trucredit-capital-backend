@@ -38,7 +38,7 @@ import { Borrower } from './modules/borrower/entities/borrower.entity';
           pool: { max: 2, min: 0, idle: 0, acquire: 5000, evict: 1000 },
           models: [User, LoanApplication, Admin, Document, Borrower],
           autoLoadModels: true,
-          synchronize: !isProd,
+          synchronize: true,
           logging: false,
         };
 

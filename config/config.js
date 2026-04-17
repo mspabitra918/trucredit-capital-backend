@@ -17,10 +17,7 @@ const prod = url
       dialect: 'postgres',
       dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
     }
-  : {
-      ...local,
-      dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
-    };
+  : local;
 
 module.exports = {
   development: local,
