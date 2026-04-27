@@ -24,15 +24,24 @@ async function bootstrap() {
     "https://www.trucreditcapital.com",
     "https://trucredit-capital-frontend.vercel.app",
     "https://trucredit-capital-backend-six.vercel.app",
+    "www.trucreditcapital.com",
+    "https://trucreditcapital.com",
+    "trucreditcapital.com",
+    "https://www.trucreditcapital.com",
   ];
-  const allowedOrigins = Array.from(new Set([...envOrigins, ...defaultOrigins]));
+  const allowedOrigins = Array.from(
+    new Set([...envOrigins, ...defaultOrigins]),
+  );
   app.enableCors({
     origin: (origin, cb) => {
       if (!origin) return cb(null, true);
       const normalized = stripSlash(origin);
       try {
         const host = new URL(normalized).hostname;
-        if (allowedOrigins.includes(normalized) || /\.vercel\.app$/.test(host)) {
+        if (
+          allowedOrigins.includes(normalized) ||
+          /\.vercel\.app$/.test(host)
+        ) {
           return cb(null, true);
         }
       } catch {
