@@ -33,7 +33,7 @@ import { Borrower } from './modules/borrower/entities/borrower.entity';
           dialect: 'postgres' as const,
           dialectModule: pg,
           dialectOptions: isProd
-            ? { ssl: { require: true, rejectUnauthorized: false } }
+            ? { ssl: { require: true, rejectUnauthorized: true } }
             : {},
           pool: { max: 2, min: 0, idle: 0, acquire: 5000, evict: 1000 },
           models: [User, LoanApplication, Admin, Document, Borrower],
